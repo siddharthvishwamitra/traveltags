@@ -1,0 +1,141 @@
+@font-face {
+  font-family: IGSans-R;
+  src: url(/assets/InstagramSans-Regular.woff2);
+}
+
+@font-face {
+  font-family: Inter-Bold;
+  src: url(/assets/Inter-Bold.ttf);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+}
+
+a {
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:visited {
+  color: black;
+}
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+
+header img {
+    height: 45px;
+}
+.container {
+  padding: 15px;
+}
+
+.continent-title {
+  font-size: 20px;
+  font-family: Inter-Bold;
+  cursor: pointer;
+  padding: 8px;
+  border-bottom: 2px solid #e8e8e8;
+  margin-top: 10px;
+}
+
+.continent-title::before {
+  content: "";
+  background: url('/assets/closed-umbrella-96.png') no-repeat center;
+  background-size: contain;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.continent-title.open::before {
+  background: url('/assets/umbrella-96.png') no-repeat center;
+  background-size: contain;
+}
+
+.countries-list {
+  margin: 0;
+  list-style-type: none;
+  padding-left: 0px;
+  padding-top: 5px;
+  font-family: IGSans-R;
+  margin-top: 5px;
+  display: none;
+}
+
+.countries-list li {
+  padding: 8px;
+  border-bottom: 1px solid #e8e8e8;
+  font-size: 15px;
+}
+
+.countries-list a {
+  color: #272727;
+}
+
+.countries-list li:hover {
+  background-color: #e8e8e8;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 8px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: IGSans-R;
+  outline-color: darkviolet;
+}
+
+.title-site {
+  font-family: Inter-Bold;
+  text-align: center;
+  padding-bottom: 10px;
+  font-size: 22px;
+}
+
+#info-section {
+    margin-top: 18px!important;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    text-align: center;
+    font-family: IGSans-R;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin: 8px;
+}
+#info-section h3 {
+    font-family: Inter-Bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  background-color: #272727;
+  text-align: center;
+  color: white;
+  font-family: IGSans-R;
+  font-size: 14px;
+}
+
+.footer-content p {
+  margin: 5px 0;
+}

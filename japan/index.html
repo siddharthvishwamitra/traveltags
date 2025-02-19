@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prefectures & Cities</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    @font-face {
+  font-family: IGSans-R;
+  src: url(/assets/InstagramSans-Regular.woff2);
+}
+
+@font-face {
+  font-family: Inter-Bold;
+  src: url(/assets/Inter-Bold.ttf);
+}
+        body { font-family: IGSans-R; text-align: center; }
+        #navbar { display: flex; align-items: center; padding: 10px; background: #007bff; color: white; }
+        #backButton { display: none; margin-right: 10px; cursor: pointer; }
+        #title { flex-grow: 1; font-size: 1.5em; font-family: Inter-Bold; text-align: left;}
+        table { width: 100%; border-collapse: collapse; margin-top: 10px;}
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #007bff; color: white; font-family: Inter-Bold; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <span id="backButton">&#8592;</span>
+        <span id="title">Prefectures</span>
+    </div>
+    <div id="content">
+        <div id="prefectures"></div>
+        <div id="cities" class="hidden"></div>
+    </div><script>
+    let prefectures = [], cities = [];
+    let currentPrefecture = null;
+    
+    function loadData() {
+        $.getJSON("prefectures.json", function(data) { prefectures = data; renderPrefectures(); });
+        $.getJSON("cities.json", function(data) { cities = data; });
+    }
+    
+    function renderPrefectures() {
+        let html = '<table><tr><th>Native Name</th><th>Kana</th><th>English</th></tr>';
+        prefectures.forEach(pref => {
+            html += `<tr onclick="showCities('${pref.iso}', '${pref.prefecture_romaji}')">
+                <td>${pref.prefecture_kanji}</td>
+                <td>${pref.prefecture_kana}</td>
+                <td>${pref.prefecture_romaji}</td>
+            </tr>`;
+        });
+        html += '</table>';
+        $("#prefectures").html(html).show();
+        $("#cities").hide();
+        updateTitle("Prefectures", false);
+    }
+
+  function showCities(prefId, name) {
+    history.pushState({ page: name }, "", "?" + name);
+    currentPrefecture = name;
+
+    let filteredCities = cities.filter(city => String(city.prefecture_id) === String(prefId));
+
+    if (filteredCities.length === 0) {
+        $("#cities").html("<p>No cities found for this prefecture.</p>").show();
+        $("#prefectures").hide();
+        updateTitle(name, true);
+        return;
+    }
+
+    let html = `<table><tr><th>Native Name</th><th>English</th><th>Special District</th></tr>`;
+    filteredCities.forEach(city => {
+        html += `<tr>
+                    <td>${city.city_ja}</td>
+                    <td>${city.city_en}</td>
+                    <td>${city.special_district_ja || ''}</td>
+                </tr>`;
+    });
+    html += '</table>';
+
+    $("#cities").html(html).show();
+    $("#prefectures").hide();
+    updateTitle(name, true);
+
+    // Scroll to top only when opening cities
+    window.scrollTo(0, 0);
+}
+
+    function updateTitle(title, showBack) {
+        $("#title").text(title);
+        $("#backButton").toggle(showBack);
+    }
+
+    $("#backButton").click(() => goBack());
+    
+    function goBack() {
+        history.back();
+    }
+
+    window.onpopstate = function(event) {
+        if (!event.state || !event.state.page) {
+            renderPrefectures();
+        } else {
+            showCities(prefectures.find(p => p.prefecture_romaji === event.state.page).iso, event.state.page);
+        }
+    };
+    
+    $(document).ready(() => {
+        loadData();
+        const params = new URLSearchParams(window.location.search);
+        const prefName = params.keys().next().value;
+        if (prefName) {
+            const pref = prefectures.find(p => p.prefecture_romaji.toLowerCase() === prefName.toLowerCase());
+            if (pref) showCities(pref.iso, pref.prefecture_romaji);
+        }
+    });
+</script>
+
+</body>
+</html>
