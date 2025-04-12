@@ -38,10 +38,11 @@ function filterCountries() {
     if (!noResults) {
       noResults = document.createElement("p");
       noResults.id = "noResults";
-      noResults.textContent = "No results found.";
+      noResults.textContent = "No results found!";
       noResults.style.fontFamily = "IGSans-R";
       noResults.style.fontSize = "16px";
       noResults.style.textAlign = "center";
+      noResults.style.marginTop = "30px";
       document.getElementById("world-list").appendChild(noResults);
     }
   } else {
