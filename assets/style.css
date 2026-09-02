@@ -80,6 +80,9 @@ header img {
 
 .countries-list a {
   color: #272727;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .countries-list li:hover {
